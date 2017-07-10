@@ -278,17 +278,13 @@ public class KVSpinnerView: UIView {
 
 fileprivate extension KVSpinnerView {
     
-    fileprivate func startAnimating(onView view: UIView?,
+    fileprivate func startAnimating(onView view: UIView!,
                                     withMessage message: String?) {
         clearAllAnimation()
         rectangleLayer.statusMessage = message != nil ? message : nil
         isAnimating = true
-        if let view = view {
-            chosenView = view
-            addSubViewToParentView(view)
-        } else {
-            addViewToWindow()
-        }
+        chosenView = view
+        addSubViewToParentView(view)
     }
     
     fileprivate func handleProgress(_ progress: Progress?,
@@ -333,32 +329,7 @@ fileprivate extension KVSpinnerView {
         }
     }
     
-    //MARK: - 
-    
-
-
-    fileprivate func addViewToWindow() {
-    #if APP_EXTENSION
-        assert(false, "Add view in parent manually. UIApplication is not supported on this target")
-    #else
-        let window = UIApplication.shared.keyWindow!
-        let radius = KVSpinnerView.settings.spinnerRadius
-        self.frame = CGRect(x: window.bounds.midX,
-                            y: window.bounds.midY,
-                            width: radius,
-                            height: radius)
-        self.center = CGPoint(x: window.bounds.midX,
-                              y: rectangleLayer.statusMessage == nil ? window.bounds.midY : window.bounds.midY - 30) // Height of textLayer
-        self.alpha = 0.0
-        window.addSubview(self)
-        UIView.animate(withDuration: KVSpinnerView.settings.fadeInDuration,
-                       delay: 0.0,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.alpha = 1.0
-        }, completion: nil)
-    #endif
-    }
+    //MARK: -
     
     fileprivate func addSubViewToParentView(_ parentView: UIView) {
         let radius = KVSpinnerView.settings.spinnerRadius
