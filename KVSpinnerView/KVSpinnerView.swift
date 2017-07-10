@@ -335,7 +335,12 @@ fileprivate extension KVSpinnerView {
     
     //MARK: - 
     
+
+
     fileprivate func addViewToWindow() {
+    #if APP_EXTENSION
+        assert(false, "Add view in parent manually. UIApplication is not supported on this target")
+    #else
         let window = UIApplication.shared.keyWindow!
         let radius = KVSpinnerView.settings.spinnerRadius
         self.frame = CGRect(x: window.bounds.midX,
@@ -352,6 +357,7 @@ fileprivate extension KVSpinnerView {
                        animations: {
                         self.alpha = 1.0
         }, completion: nil)
+    #endif
     }
     
     fileprivate func addSubViewToParentView(_ parentView: UIView) {
